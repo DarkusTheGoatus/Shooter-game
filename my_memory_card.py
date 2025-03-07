@@ -34,10 +34,10 @@ questions_list.append(
 
 app = QApplication([])
 
-btn_OK = QPushButton('Reply') # the reply button
-lb_Question = QLabel('The most difficult question in the world!') # question text
+btn_OK = QPushButton('Reply')
+lb_Question = QLabel('The most difficult question in the world!') 
 
-RadioGroupBox = QGroupBox("Answer options")  # on-screen group of radio buttons
+RadioGroupBox = QGroupBox("Answer options")  
 
 rbtn_1 = QRadioButton('Option 1')
 rbtn_2 = QRadioButton('Option 2')
@@ -45,7 +45,7 @@ rbtn_3 = QRadioButton('Option 3')
 rbtn_4 = QRadioButton('Option 4')
 rbtn_5 = QRadioButton('Option 5')
 
-RadioGroup = QButtonGroup() # this is to group radio buttons to control their behavior
+RadioGroup = QButtonGroup() 
 RadioGroup.addButton(rbtn_1)
 RadioGroup.addButton(rbtn_2)
 RadioGroup.addButton(rbtn_3)
@@ -53,39 +53,39 @@ RadioGroup.addButton(rbtn_4)
 RadioGroup.addButton(rbtn_5)
 
 layout_ans1 = QHBoxLayout()   
-layout_ans2 = QVBoxLayout() # vertical guides inside the horizontal one
+layout_ans2 = QVBoxLayout() 
 layout_ans3 = QVBoxLayout()
 layout_ans4 = QVBoxLayout()
-layout_ans2.addWidget(rbtn_1)  # two answer options in the first column
+layout_ans2.addWidget(rbtn_1)  
 layout_ans2.addWidget(rbtn_2)
-layout_ans3.addWidget(rbtn_3) # two answer options in the second column
+layout_ans3.addWidget(rbtn_3) 
 layout_ans3.addWidget(rbtn_4)
 layout_ans4.addWidget(rbtn_5)
 
 layout_ans1.addLayout(layout_ans2)
-layout_ans1.addLayout(layout_ans3)  # columns placed in one line
+layout_ans1.addLayout(layout_ans3)  
 layout_ans1.addLayout(layout_ans4)
-RadioGroupBox.setLayout(layout_ans1) # the "panel" with answer options is ready 
+RadioGroupBox.setLayout(layout_ans1) 
 
 
 AnsGroupBox = QGroupBox("Test results")
-lb_Result = QLabel('are you right or not?') # here it will be written if you are "right" or "wrong"
-lb_Correct = QLabel('answer will be here!') # here will be the text of the correct answer
+lb_Result = QLabel('are you right or not?') 
+lb_Correct = QLabel('answer will be here!') 
 
 layout_res = QVBoxLayout()
 layout_res.addWidget(lb_Result, alignment=(Qt.AlignLeft | Qt.AlignTop))
 layout_res.addWidget(lb_Correct, alignment=Qt.AlignHCenter, stretch=2)
 AnsGroupBox.setLayout(layout_res)
-layout_line1 = QHBoxLayout() # question
-layout_line2 = QHBoxLayout() # answer options or test result 
-layout_line3 = QHBoxLayout() # "Answer" button
+layout_line1 = QHBoxLayout() 
+layout_line2 = QHBoxLayout() 
+layout_line3 = QHBoxLayout() 
 
 layout_line1.addWidget(lb_Question, alignment=(Qt.AlignHCenter | Qt.AlignVCenter))
 layout_line2.addWidget(RadioGroupBox)   
 layout_line2.addWidget(AnsGroupBox)  
-AnsGroupBox.hide() # hide the answer panel, the question panel should be visible first 
+AnsGroupBox.hide()
 layout_line3.addStretch(1)
-layout_line3.addWidget(btn_OK, stretch=2) # the button should be large
+layout_line3.addWidget(btn_OK, stretch=2) 
 
 layout_line3.addStretch(1)
 
@@ -111,28 +111,28 @@ def show_question():
     RadioGroupBox.show()
     AnsGroupBox.hide()
     btn_OK.setText('Reply')
-    RadioGroup.setExclusive(False) # removed the restrictions so as to reset the radio button choice
+    RadioGroup.setExclusive(False) 
     rbtn_1.setChecked(False)
     rbtn_2.setChecked(False)
     rbtn_3.setChecked(False)
     rbtn_4.setChecked(False)
     rbtn_5.setChecked(False)
-    RadioGroup.setExclusive(True) # returned the restrictions, now only one radio button can be selected
+    RadioGroup.setExclusive(True)
 
 answers = [rbtn_1, rbtn_2, rbtn_3, rbtn_4, rbtn_5]
 
 def ask(q: Question):
     ''' the function writes the values of the question and answers to the corresponding widgets, 
     at the same time the answer options are distributed randomly'''
-    shuffle(answers) # shuffled the list of buttons, now some random button is first in the list
-    answers[0].setText(q.right_answer) # fill the first element of the list with the right answer, the rest with wrong ones
+    shuffle(answers) 
+    answers[0].setText(q.right_answer) 
     answers[1].setText(q.wrong1)
     answers[2].setText(q.wrong2)
     answers[3].setText(q.wrong3)
     answers[4].setText(q.wrong4)
-    lb_Question.setText(q.question) # question
-    lb_Correct.setText(q.right_answer) # reply
-    show_question() # show question panel 
+    lb_Question.setText(q.question) 
+    lb_Correct.setText(q.right_answer) 
+    show_question() 
 
 def show_correct(res):
     ''' show the result - set the text passed to the "result" inscription and show the panel we need '''
@@ -142,7 +142,7 @@ def show_correct(res):
 def check_answer():
     ''' if any answer option is chosen, we need to check and show the answer panel'''
     if answers[0].isChecked():
-        # right answer!
+        
         show_correct('Right!')
         window.score += 1
         print('Statistics\n-Total questions: ', window.total, '\n-Right answers: ', window.score)
@@ -158,25 +158,23 @@ def next_question():
     ''' asks a random question from the list '''
     window.total += 1
     print('Statistics\n-Total questions: ', window.total, '\n-Right answers: ', window.score)
-    cur_question = randint(0, len(questions_list) - 1)  # we don't need the old value,
-                                                        # this means that you can use a local variable!  
-            # randomly picked a question within the list
-            # if you enter about a hundred words, they will rarely be repeated
-    q = questions_list[cur_question] # picked a question
-    ask(q) # asks
+    cur_question = randint(0, len(questions_list) - 1)  
+                                                       
+    q = questions_list[cur_question] 
+    ask(q) 
 
 def click_OK():
     ''' determines whether to show another question or check the answer to this one '''
     if btn_OK.text() == 'Answer':
-        check_answer() # answer check
+        check_answer() 
     else:
-        next_question() # next question
+        next_question() 
 
 window = QWidget()
 window.setLayout(layout_card)
 window.setWindowTitle('Memo Card')
 
-btn_OK.clicked.connect(click_OK) # by clicking on the button, we choose what exactly happens
+btn_OK.clicked.connect(click_OK) 
 
 window.score = 0
 window.total = 0
